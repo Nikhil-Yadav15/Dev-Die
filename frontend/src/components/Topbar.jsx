@@ -10,75 +10,23 @@ export default function Topbar() {
   const navigate = useNavigate();
 
   return (
-    <header
-      style={{
-        height: "64px",
-        backgroundColor: "black",
-        color: "#FFD700",
-        display: "flex",
-        justifyContent: "flex-end",
-        alignItems: "center",
-        padding: "0 24px",
-        borderBottom: "1px solid #222",
-        zIndex: 10,
-      }}
-    >
+    <header className="h-14 sm:h-16 bg-slate-950/80 text-cyan-300 flex justify-end items-center px-4 sm:px-6 border-b border-slate-800 z-10">
       <button
-        style={{
-          position: "relative",
-          padding: 0,
-          background: "none",
-          border: "none",
-          marginRight: 16,
-          color: "#FFD700",
-          cursor: "pointer",
-        }}
+        className="relative p-0 bg-transparent border-none mr-3 sm:mr-4 text-cyan-300 hover:text-cyan-200 cursor-pointer transition-colors"
         aria-label="Notifications"
         onClick={() => navigate("/notifications")}
       >
-        <Bell size={28} />
-        <span
-          style={{
-            position: "absolute",
-            top: 2,
-            right: -2,
-            width: 11,
-            height: 11,
-            background: "#FF1744",
-            borderRadius: "50%",
-            border: "2px solid #222",
-            boxShadow: "0 0 6px #FFD700",
-            display: "block",
-          }}
-        />
+        <Bell size={24} className="sm:w-7 sm:h-7" />
+        <span className="absolute top-0 right-0 w-2.5 h-2.5 bg-rose-500 rounded-full border-2 border-slate-950 shadow-[0_0_6px_rgba(56,189,248,0.6)]" />
       </button>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 10,
-        }}
-      >
+      <div className="flex items-center gap-2 sm:gap-3">
         <img
           src="https://i.pravatar.cc/40"
           alt="User Avatar"
-          style={{
-            width: 34,
-            height: 34,
-            borderRadius: "50%",
-            border: "2px solid #FFD700",
-          }}
+          className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border-2 border-cyan-400"
         />
-        <span
-          style={{
-            color: "white",
-            fontWeight: 600,
-            fontSize: 15,
-            marginLeft: 4,
-            letterSpacing: 0.2,
-          }}
-        >
-          {user?.name || "Alchemist"}
+        <span className="text-white font-semibold text-sm sm:text-base tracking-wide hidden sm:inline">
+          {user?.name || "User"}
         </span>
       </div>
     </header>

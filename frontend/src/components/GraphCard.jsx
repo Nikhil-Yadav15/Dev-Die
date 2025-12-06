@@ -60,16 +60,45 @@ function WeeklyProgressChart() {
     fetchProgress();
   }, []);
 
-  if (!chartData) return <div className="text-yellow-400 mt-8">Loading progress graph...</div>;
+  if (!chartData) return <div className="text-cyan-300 mt-8 text-center">Loading progress graph...</div>;
 
   return (
-    <div className="p-6 mt-8 rounded-3xl bg-gray-900 border border-yellow-400/30 shadow-lg max-w-2xl mx-auto">
-      <h3 className="text-xl text-yellow-400 text-center font-bold mb-4">Weekly Progress</h3>
-      <Bar data={chartData} options={{
-        scales: {
-          y: { beginAtZero: true, max: 100 }
-        }
-      }} />
+    <div className="p-4 sm:p-6 md:p-8 mt-8 rounded-2xl sm:rounded-3xl bg-slate-950/90 border border-cyan-400/40 shadow-[0_24px_70px_rgba(15,23,42,1)] max-w-4xl mx-auto">
+      <h3 className="text-lg sm:text-xl md:text-2xl text-cyan-200 text-center font-bold mb-4 sm:mb-6">Weekly Progress</h3>
+      <div className="w-full overflow-x-auto">
+        <Bar 
+          data={{
+            ...chartData,
+            datasets: [{
+              ...chartData.datasets[0],
+              backgroundColor: "rgba(34, 197, 94, 0.6)",
+              borderColor: "rgba(34, 197, 94, 1)",
+              borderWidth: 2,
+            }]
+          }} 
+          options={{
+            responsive: true,
+            maintainAspectRatio: true,
+            scales: {
+              y: { 
+                beginAtZero: true, 
+                max: 100,
+                ticks: { color: '#cbd5e1' },
+                grid: { color: 'rgba(100, 116, 139, 0.2)' }
+              },
+              x: {
+                ticks: { color: '#cbd5e1' },
+                grid: { color: 'rgba(100, 116, 139, 0.2)' }
+              }
+            },
+            plugins: {
+              legend: {
+                labels: { color: '#cbd5e1' }
+              }
+            }
+          }} 
+        />
+      </div>
     </div>
   );
 }
