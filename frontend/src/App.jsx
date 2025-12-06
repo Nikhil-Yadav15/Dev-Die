@@ -1,7 +1,7 @@
 
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
-
+import ProtectedRoute from "./components/ProtectedRoute";
 
 import Register from "./pages/register";
 import Login from "./pages/login";
@@ -21,24 +21,20 @@ export default function App() {
     <Router>
       <AuthProvider>
         <Routes>
-        
-
+          {/* Public Routes */}
           <Route path="/" element={<Navigate to="/login" replace />} />
-
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/home" element={<Home />} />
           <Route path="/support" element={<Support />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
           
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/medicine" element={<MedicineForm />} />
-         <Route path="/getUserHistory" element={<UserMedicinesManager />} />
-          <Route path="/notifications" element={<Notifications />} />
-
-
-          
+          {/* Protected Routes - Require Authentication */}
+          <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+          <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+          <Route path="/medicine" element={<ProtectedRoute><MedicineForm /></ProtectedRoute>} />
+          <Route path="/getUserHistory" element={<ProtectedRoute><UserMedicinesManager /></ProtectedRoute>} />
+          <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
         </Routes>
       </AuthProvider>
     </Router>
