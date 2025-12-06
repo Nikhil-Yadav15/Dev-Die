@@ -666,7 +666,9 @@ const createNotification = async (userId, type, medicineName, doseTime, message)
     if (existing) return;
 
     await new Notification({ userId, type, medicineName, doseTime, message }).save();
+    
     const user = await User.findById(userId);
+
     if (user?.email) await sendEmail(user.email, `Medico - ${type.charAt(0).toUpperCase() + type.slice(1)}`, message);
 
   } catch (err) {
