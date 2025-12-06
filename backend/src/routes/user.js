@@ -29,7 +29,9 @@ router.put("/medicine/:id", updateMedicineById);
 router.delete("/medicine/:id", deleteMedicineById);
 router.post("/medicine/track", trackMedicineIntake);
 router.get("/medicine/today", getTodayDoses);
+
 router.get("/notifications", getNotifications);
+
 router.delete("/notifications/:id", deleteNotification);
 router.get("/medicine/upcoming", getUpcomingMedicines);
 
