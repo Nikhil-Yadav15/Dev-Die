@@ -2,7 +2,7 @@
  
 **Smart Medicine Reminders & Wellness Dashboard.**
 
-Medico Tracker is a modern health management platform built using React, Node.js, Socket.IO, and MongoDB. It helps users maintain their medicine schedule, track adherence, and receive dose reminders, supporting both individuals and caregivers to achieve better daily wellness.
+Medico Tracker is a modern health management platform built using React, Node.js and MongoDB. It helps users maintain their medicine schedule, track adherence, and receive dose reminders, supporting both individuals and caregivers to achieve better daily wellness.
 
 [🌐 Live Demo](https://medico-tracker.onrender.com) · [💻 GitHub Repository](https://github.com/Pranay-Mathurkar/CodeSangam)
 
@@ -30,7 +30,7 @@ Medico Tracker is a modern health management platform built using React, Node.js
 
  - **Frontend **: React.js, Tailwind CSS, Vite, Material UI.​
 
-- **Backend**: Node.js, Express.js, Socket.IO.​
+- **Backend**: Node.js, Express.js.
 
 - **Database**: MongoDB Atlas (sessions and user data).​
 
