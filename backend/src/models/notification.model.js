@@ -12,24 +12,34 @@ const notificationSchema = new mongoose.Schema({
     required: true,
   },
   medicineName: {
+
     type: String,
     required: true,
+    
   },
   doseTime: {
+
     type: String, 
     required: true,
+
   },
   message: {
+
     type: String,
     required: true,
+
   },
   seen: {
+
     type: Boolean,
     default: false,
+
   },
   createdAt: {
+
     type: Date,
     default: Date.now,
+
   },
 });
 
