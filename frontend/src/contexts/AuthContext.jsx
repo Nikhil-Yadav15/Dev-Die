@@ -212,7 +212,14 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
- 
+  const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("alertedDoses");
+    setUser(null);
+    setAlertedDoses(new Set());
+    navigate("/login");
+  };
 
 
   useEffect(() => {
@@ -227,6 +234,7 @@ export const AuthProvider = ({ children }) => {
         register,
         login,
          googleLogin,
+        logout,
         medicine,
         getHistoryOfUser,
         updateMedicine,
