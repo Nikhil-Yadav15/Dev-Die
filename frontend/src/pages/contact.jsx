@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 
-
-
 export default function ContactPage() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
-  const [status, setStatus] = useState("idle"); 
+  const [status, setStatus] = useState("idle");
 
   function handleChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -14,7 +12,6 @@ export default function ContactPage() {
     e.preventDefault();
     setStatus("sending");
 
-    
     setTimeout(() => {
       setStatus("success");
       setForm({ name: "", email: "", message: "" });
@@ -22,70 +19,137 @@ export default function ContactPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#000000] via-[#0a0a0a] to-[#1a1a1a] text-gray-100 flex flex-col items-center py-12 px-6">
-      <header className="mb-10 text-center">
-        <h1 className="text-4xl font-bold text-[#d4af37] drop-shadow-[0_0_15px_rgba(212,175,55,0.3)]">
-          Contact Medico
-        </h1>
-        <p className="text-gray-400 mt-3 max-w-md mx-auto">
-          We'd love to hear from you. Send us your thoughts or feedback below.
-        </p>
-      </header>
+    <div
+      className="min-h-screen text-gray-100 flex flex-col items-center justify-center px-6 py-16 relative overflow-hidden"
+      style={{
+        background:
+          "radial-gradient(circle at 85% 10%, rgba(148,163,184,0.20) 0, rgba(0,0,0,1) 55%)",
+      }}
+    >
+      {/* Subtle glow layer */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(circle at 10% 90%, rgba(148,163,184,0.12) 0, transparent 55%)",
+        }}
+      />
 
-      <main className="w-full max-w-md bg-black/60 p-8 rounded-2xl shadow-[0_0_25px_rgba(212,175,55,0.15)] border border-[#d4af37]/20 transition-all duration-300 hover:shadow-[0_0_35px_rgba(212,175,55,0.3)]">
-        {status === "success" ? (
-          <div className="text-center text-[#d4af37] font-semibold animate-fade-in">
-            ✨ Thank you! Your message has been sent successfully.
-          </div>
-        ) : status === "sending" ? (
-          <div className="flex flex-col items-center justify-center text-[#ffd873] font-medium">
-            <div className="w-8 h-8 border-4 border-[#d4af37] border-t-transparent rounded-full animate-spin mb-3"></div>
-            Sending your message...
-          </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <input
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-              placeholder="Your Name"
-              required
-              className="px-3 py-2 rounded-md bg-black/40 placeholder-gray-400 ring-1 ring-[#d4af37]/20 focus:ring-[#d4af37]/40 focus:outline-none"
-            />
+      {/* Content wrapper */}
+      <div className="relative z-10 w-full max-w-3xl">
+        {/* Header */}
+        <header className="mb-10 text-center">
+          <h1 className="text-3xl md:text-4xl font-bold text-white tracking-wide">
+            Contact Medico
+          </h1>
+          <p className="text-gray-400 mt-3 max-w-xl mx-auto text-sm md:text-base">
+            Have a question, feedback, or a feature request? Send us a message
+            and we’ll get back to you as soon as we can.
+          </p>
+        </header>
 
-            <input
-              name="email"
-              type="email"
-              value={form.email}
-              onChange={handleChange}
-              placeholder="Your Email"
-              required
-              className="px-3 py-2 rounded-md bg-black/40 placeholder-gray-400 ring-1 ring-[#d4af37]/20 focus:ring-[#d4af37]/40 focus:outline-none"
-            />
+        {/* Card */}
+        <main
+          className="w-full bg-white/[0.03] border border-white/10 rounded-2xl
+          shadow-[0_0_30px_rgba(0,0,0,0.7)] backdrop-blur-xl p-6 md:p-8"
+        >
+          {status === "success" ? (
+            <div className="flex flex-col items-center justify-center text-center space-y-3">
+              <div className="w-10 h-10 rounded-full border border-emerald-400/60 flex items-center justify-center">
+                <span className="text-emerald-400 text-xl">✓</span>
+              </div>
+              <p className="text-sm md:text-base text-emerald-300 font-medium">
+                Thank you! Your message has been sent successfully.
+              </p>
+              <button
+                onClick={() => setStatus("idle")}
+                className="mt-2 text-xs md:text-sm text-gray-300 underline underline-offset-4 hover:text-white transition"
+              >
+                Send another message
+              </button>
+            </div>
+          ) : status === "sending" ? (
+            <div className="flex flex-col items-center justify-center text-center space-y-3">
+              <div className="w-8 h-8 border-4 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
+              <p className="text-sm md:text-base text-gray-300">
+                Sending your message…
+              </p>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+              <div className="flex flex-col gap-1">
+                <label className="text-xs md:text-sm text-gray-300">
+                  Name
+                </label>
+                <input
+                  name="name"
+                  value={form.name}
+                  onChange={handleChange}
+                  placeholder="Enter your full name"
+                  required
+                  className="px-3 py-2 rounded-lg bg-black/40 text-gray-100 
+                  placeholder-gray-500 border border-gray-700/70
+                  focus:border-gray-300 focus:outline-none focus:ring-0 text-sm md:text-base"
+                />
+              </div>
 
-            <textarea
-              name="message"
-              value={form.message}
-              onChange={handleChange}
-              placeholder="Your Message"
-              rows={5}
-              required
-              className="px-3 py-2 rounded-md bg-black/40 placeholder-gray-400 ring-1 ring-[#d4af37]/20 focus:ring-[#d4af37]/40 focus:outline-none"
-            />
+              <div className="flex flex-col gap-1">
+                <label className="text-xs md:text-sm text-gray-300">
+                  Email
+                </label>
+                <input
+                  name="email"
+                  type="email"
+                  value={form.email}
+                  onChange={handleChange}
+                  placeholder="you@example.com"
+                  required
+                  className="px-3 py-2 rounded-lg bg-black/40 text-gray-100 
+                  placeholder-gray-500 border border-gray-700/70
+                  focus:border-gray-300 focus:outline-none focus:ring-0 text-sm md:text-base"
+                />
+              </div>
 
-            <button
-              type="submit"
-              className="px-4 py-2 bg-[#d4af37] text-black font-semibold rounded-lg shadow-inner hover:bg-[#ffd873] transition"
-            >
-              Send Message
-            </button>
-          </form>
-        )}
-      </main>
+              <div className="flex flex-col gap-1">
+                <label className="text-xs md:text-sm text-gray-300">
+                  Message
+                </label>
+                <textarea
+                  name="message"
+                  value={form.message}
+                  onChange={handleChange}
+                  placeholder="How can we help you?"
+                  rows={5}
+                  required
+                  className="px-3 py-2 rounded-lg bg-black/40 text-gray-100 
+                  placeholder-gray-500 border border-gray-700/70
+                  focus:border-gray-300 focus:outline-none focus:ring-0 text-sm md:text-base resize-none"
+                />
+              </div>
 
-      <footer className="mt-12 text-gray-500 text-sm">
-        © {new Date().getFullYear()} Medico
-      </footer>
+              <button
+                type="submit"
+                className="mt-2 inline-flex items-center justify-center px-6 py-2.5
+                rounded-full text-sm md:text-base font-semibold tracking-wide
+                bg-gradient-to-r from-[#0f172a] to-[#1f2937]
+                text-white border border-gray-700
+                hover:from-[#111827] hover:to-[#020617]
+                hover:border-gray-400
+                shadow-[0_0_18px_rgba(0,0,0,0.9)]
+                transition-all duration-300"
+              >
+                Send Message
+              </button>
+            </form>
+          )}
+        </main>
+
+        {/* Footer */}
+        <footer className="mt-10 text-center text-gray-500 text-xs md:text-sm">
+          © {new Date().getFullYear()} Medico · Contact support for
+          health-related questions, not emergency care.
+        </footer>
+      </div>
     </div>
   );
 }
