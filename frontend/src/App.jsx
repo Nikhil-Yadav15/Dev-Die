@@ -6,9 +6,6 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Register from "./pages/register";
 import Login from "./pages/login";
 import Home from "./pages/home";
-import Support from "./pages/support";
-import Contact from "./pages/contact";
-import About from "./pages/about";
 
 import  Dashboard from "./pages/dashboard";
 import  MedicineForm  from "./pages/medicine";
@@ -25,9 +22,6 @@ export default function App() {
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/support" element={<Support />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/about" element={<About />} />
           
           {/* Protected Routes - Require Authentication */}
           <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />

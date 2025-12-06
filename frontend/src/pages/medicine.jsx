@@ -1,61 +1,44 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { AuthContext } from '../contexts/AuthContext';
+import React, { useState, useContext, useEffect } from "react";
+import { AuthContext } from "../contexts/AuthContext";
 
 export default function MedicineForm({ initialData = {}, isEditing = false }) {
   const { medicine, user } = useContext(AuthContext);
 
- 
-
-
   const getLocalDateString = () => {
     return new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
       .toISOString()
-      .split('T')[0];
+      .split("T")[0];
   };
 
-
-
   const [formData, setFormData] = useState({
-    name: initialData.name || '',
+    name: initialData.name || "",
     frequencyPerDay: initialData.frequencyPerDay || 1,
-    times: initialData.times || [''],
+    times: initialData.times || [""],
     startDate: initialData.startDate || getLocalDateString(),
     endDate: initialData.endDate || getLocalDateString(),
   });
 
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-
-
+  // keep times array in sync with frequency
   useEffect(() => {
     const freq = parseInt(formData.frequencyPerDay, 10) || 1;
     setFormData((prev) => {
       let newTimes = [...prev.times];
       if (newTimes.length < freq) {
-        newTimes = [...newTimes, ...Array(freq - newTimes.length).fill('')];
+        newTimes = [...newTimes, ...Array(freq - newTimes.length).fill("")];
       } else if (newTimes.length > freq) {
         newTimes = newTimes.slice(0, freq);
       }
-
-
       return { ...prev, times: newTimes, frequencyPerDay: freq };
-
-
-
     });
   }, [formData.frequencyPerDay]);
-
-
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-
-
-
-    if (name === 'frequencyPerDay') {
+    if (name === "frequencyPerDay") {
       let val = parseInt(value, 10);
       if (isNaN(val) || val < 1) val = 1;
       else if (val > 10) val = 10;
@@ -65,9 +48,6 @@ export default function MedicineForm({ initialData = {}, isEditing = false }) {
     }
   };
 
-
-
-
   const handleTimeChange = (index, value) => {
     setFormData((prev) => {
       const newTimes = [...prev.times];
@@ -76,15 +56,12 @@ export default function MedicineForm({ initialData = {}, isEditing = false }) {
     });
   };
 
-
-
-  
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
 
-    const userId = user?.id || localStorage.getItem('userId') || '';
+    const userId = user?.id || localStorage.getItem("userId") || "";
 
     for (let i = 0; i < formData.times.length; i++) {
       if (!formData.times[i]) {
@@ -95,7 +72,7 @@ export default function MedicineForm({ initialData = {}, isEditing = false }) {
     }
 
     if (!formData.startDate || !formData.endDate) {
-      setError('Start date and end date are required');
+      setError("Start date and end date are required");
       setLoading(false);
       return;
     }
@@ -111,16 +88,16 @@ export default function MedicineForm({ initialData = {}, isEditing = false }) {
       );
       if (!isEditing) {
         setFormData({
-          name: '',
+          name: "",
           frequencyPerDay: 1,
-          times: [''],
+          times: [""],
           startDate: getLocalDateString(),
           endDate: getLocalDateString(),
         });
       }
     } catch (err) {
       console.error(err);
-      setError(err.response?.data?.message || 'Something went wrong');
+      setError(err.response?.data?.message || "Something went wrong");
     } finally {
       setLoading(false);
     }
@@ -129,14 +106,22 @@ export default function MedicineForm({ initialData = {}, isEditing = false }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="max-w-md mx-auto bg-gray-900 p-6 rounded-md shadow-md space-y-6"
+      className="max-w-lg mx-auto bg-slate-950/90 border border-cyan-400/30 
+      rounded-2xl shadow-[0_24px_70px_rgba(15,23,42,1)] 
+      p-6 sm:p-8 space-y-6 text-gray-100"
     >
-      <h2 className="text-white text-2xl font-semibold">
-        {isEditing ? 'Edit Medicine' : 'Add New Medicine'}
-      </h2>
+      <div className="space-y-1">
+        <h2 className="text-xl sm:text-2xl font-semibold text-white">
+          {isEditing ? "Edit Medicine" : "Add New Medicine"}
+        </h2>
+        <p className="text-xs sm:text-sm text-gray-400">
+          Configure how often and when this medicine should be taken.
+        </p>
+      </div>
 
-      <div>
-        <label htmlFor="name" className="block text-gray-300 mb-1">
+      {/* Medicine Name */}
+      <div className="space-y-1.5">
+        <label htmlFor="name" className="block text-xs sm:text-sm text-gray-300">
           Medicine Name
         </label>
         <input
@@ -144,14 +129,20 @@ export default function MedicineForm({ initialData = {}, isEditing = false }) {
           name="name"
           value={formData.name}
           onChange={handleChange}
-          placeholder="Enter medicine name"
+          placeholder="e.g. Metformin 500mg"
           required
-          className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-2.5 rounded-lg bg-black/40 text-gray-100 
+          placeholder-gray-500 border border-slate-700
+          focus:outline-none focus:border-cyan-400 focus:ring-0 text-sm"
         />
       </div>
 
-      <div>
-        <label htmlFor="frequencyPerDay" className="block text-gray-300 mb-1">
+      {/* Frequency */}
+      <div className="space-y-1.5">
+        <label
+          htmlFor="frequencyPerDay"
+          className="block text-xs sm:text-sm text-gray-300"
+        >
           Number of times per day
         </label>
         <input
@@ -163,27 +154,46 @@ export default function MedicineForm({ initialData = {}, isEditing = false }) {
           value={formData.frequencyPerDay}
           onChange={handleChange}
           required
-          className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-2.5 rounded-lg bg-black/40 text-gray-100 
+          border border-slate-700 focus:outline-none 
+          focus:border-cyan-400 focus:ring-0 text-sm"
         />
+        <p className="text-[11px] text-gray-500">
+          You can schedule up to 10 doses per day.
+        </p>
       </div>
 
-      <div>
-        <label className="block text-gray-300 mb-1">Time(s) to take medicine</label>
-        {formData.times.map((time, idx) => (
-          <input
-            key={idx}
-            type="time"
-            value={time}
-            onChange={(e) => handleTimeChange(idx, e.target.value)}
-            required
-            className="w-full mb-2 px-3 py-2 bg-gray-800 text-white border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-            aria-label={`Time for dose ${idx + 1}`}
-          />
-        ))}
+      {/* Times */}
+      <div className="space-y-2">
+        <label className="block text-xs sm:text-sm text-gray-300">
+          Time(s) to take medicine
+        </label>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          {formData.times.map((time, idx) => (
+            <input
+              key={idx}
+              type="time"
+              value={time}
+              onChange={(e) => handleTimeChange(idx, e.target.value)}
+              required
+              className="w-full px-3 py-2.5 rounded-lg bg-black/40 text-gray-100 
+              border border-slate-700 focus:outline-none 
+              focus:border-cyan-400 focus:ring-0 text-sm"
+              aria-label={`Time for dose ${idx + 1}`}
+            />
+          ))}
+        </div>
+        <p className="text-[11px] text-gray-500">
+          Set the specific times for each dose throughout the day.
+        </p>
       </div>
 
-      <div>
-        <label htmlFor="startDate" className="block text-gray-300 mb-1">
+      {/* Start Date */}
+      <div className="space-y-1.5">
+        <label
+          htmlFor="startDate"
+          className="block text-xs sm:text-sm text-gray-300"
+        >
           Start Date
         </label>
         <input
@@ -193,12 +203,18 @@ export default function MedicineForm({ initialData = {}, isEditing = false }) {
           value={formData.startDate}
           onChange={handleChange}
           required
-          className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-2.5 rounded-lg bg-black/40 text-gray-100 
+          border border-slate-700 focus:outline-none 
+          focus:border-cyan-400 focus:ring-0 text-sm"
         />
       </div>
 
-      <div>
-        <label htmlFor="endDate" className="block text-gray-300 mb-1">
+      {/* End Date */}
+      <div className="space-y-1.5">
+        <label
+          htmlFor="endDate"
+          className="block text-xs sm:text-sm text-gray-300"
+        >
           End Date
         </label>
         <input
@@ -208,23 +224,32 @@ export default function MedicineForm({ initialData = {}, isEditing = false }) {
           value={formData.endDate}
           onChange={handleChange}
           required
-          className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-2.5 rounded-lg bg-black/40 text-gray-100 
+          border border-slate-700 focus:outline-none 
+          focus:border-cyan-400 focus:ring-0 text-sm"
         />
       </div>
 
+      {/* Submit */}
       <button
         type="submit"
         disabled={loading}
-        className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded transition-colors"
+        className="w-full py-2.5 sm:py-3 rounded-full text-sm sm:text-base font-semibold
+        bg-gradient-to-r from-cyan-500 to-emerald-400
+        text-slate-950
+        shadow-[0_18px_40px_rgba(34,197,94,0.45)]
+        hover:from-cyan-400 hover:to-emerald-300
+        disabled:opacity-60 disabled:cursor-not-allowed
+        transition-all"
       >
-        {loading ? 'Saving...' : isEditing ? 'Update Medicine' : 'Add Medicine'}
+        {loading ? "Saving..." : isEditing ? "Update Medicine" : "Add Medicine"}
       </button>
 
-      {error && <div className="text-red-500 text-center mt-2">{error}</div>}
+      {error && (
+        <div className="text-rose-400 text-xs sm:text-sm text-center mt-2">
+          {error}
+        </div>
+      )}
     </form>
   );
 }
-
-
-
-
