@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { chatbotHandler } from "../controllers/chatbot.controller.js";
+
 import { getWeeklyProgress } from "../controllers/progress.control.js"; 
 
 import {
@@ -23,7 +23,7 @@ router.post("/register", register);
 router.post("/login", login);
 router.post("/auth/google", googleLogin);
 router.post("/medicine", medicine);
-router.post("/chatbot", chatbotHandler);
+// router.post("/chatbot", chatbotHandler);
 router.get("/getUserHistory", getUserHistory);
 router.put("/medicine/:id", updateMedicineById);
 router.delete("/medicine/:id", deleteMedicineById);
