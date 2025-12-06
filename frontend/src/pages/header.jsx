@@ -1,21 +1,13 @@
-
-
-
 import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "boxicons/css/boxicons.min.css";
 import { AuthContext } from "../contexts/AuthContext";
 
 const Header = () => {
-  const { user, setUser } = useContext(AuthContext); 
-
+  const { user, setUser } = useContext(AuthContext);
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
-
-  
-
-
 
   const handleProtectedNav = (event, path) => {
     if (!user) {
@@ -24,144 +16,161 @@ const Header = () => {
     }
   };
 
-  const handleSignIn = () => {
-    navigate("/login");
-  };
-
+  const handleSignIn = () => navigate("/login");
   const handleLogout = () => {
-    localStorage.removeItem("token"); 
-    setUser(null); 
+    localStorage.removeItem("token");
+    setUser(null);
     navigate("/login");
   };
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen((prev) => !prev);
-  };
+  const toggleMobileMenu = () => setIsMobileMenuOpen((p) => !p);
 
   return (
-    <header className="flex justify-between items-center py-4 px-4 lg:px-20 relative">
+    <header className="flex justify-between items-center py-6 px-6 lg:px-20 relative backdrop-blur-sm text-gray-100">
       
+      {/* Logo */}
       <h1
-        className="text-3xl md:text-4xl lg:text-5xl font-light cursor-pointer"
+        className="text-2xl md:text-3xl lg:text-4xl font-semibold tracking-wide cursor-pointer 
+        bg-gradient-to-r from-gray-200 to-white bg-clip-text text-transparent"
         onClick={() => navigate("/home")}
       >
         MEDICO
       </h1>
 
-    
+      {/* Desktop Navigation */}
       <nav className="hidden md:flex items-center gap-10">
         <Link
           to="/dashboard"
           onClick={(e) => handleProtectedNav(e, "/dashboard")}
-          className="m-5 px-6 py-3 bg-white text-gray-800 font-semibold rounded-full shadow-md 
-              hover:bg-gray-200 transition-colors duration-300 text-center"
+          className="text-sm font-medium uppercase tracking-wide text-gray-300 
+          hover:text-white transition-colors"
         >
           My Account
         </Link>
 
-        <Link to="/about" className="m-5 px-6 py-3 bg-white text-gray-800 font-semibold rounded-full shadow-md 
-              hover:bg-gray-200 transition-colors duration-300 text-center">
-          About Us
+        <Link
+          to="/about"
+          className="text-sm font-medium uppercase tracking-wide text-gray-300 
+          hover:text-white transition-colors"
+        >
+          About
         </Link>
 
-        <Link to="/contact" className="m-5 px-6 py-3 bg-white text-gray-800 font-semibold rounded-full shadow-md 
-              hover:bg-gray-200 transition-colors duration-300 text-center">
+        <Link
+          to="/contact"
+          className="text-sm font-medium uppercase tracking-wide text-gray-300 
+          hover:text-white transition-colors"
+        >
           Contact
         </Link>
 
-        <Link to="/support" className="m-5 px-6 py-3 bg-white text-gray-800 font-semibold rounded-full shadow-md 
-              hover:bg-gray-200 transition-colors duration-300 text-center">
+        <Link
+          to="/support"
+          className="text-sm font-medium uppercase tracking-wide text-gray-300 
+          hover:text-white transition-colors"
+        >
           Support
         </Link>
       </nav>
 
-   
+      {/* Auth Button — Desktop */}
       {!user ? (
         <button
           onClick={handleSignIn}
-          className="hidden md:block bg-[#a7a7a7] text-black py-3 px-8 rounded-full
-            font-medium transition-all duration-500 hover:bg-white hover:text-black"
+          className="hidden md:block px-6 py-2 rounded-full text-sm font-medium uppercase
+          bg-gradient-to-r from-gray-100 to-gray-300 text-black shadow-sm
+          hover:shadow-lg transition-all"
         >
-          SIGN IN
+          Sign In
         </button>
       ) : (
         <button
           onClick={handleLogout}
-          className="hidden md:block bg-[#a7a7a7] text-black py-3 px-8 rounded-full
-            font-medium transition-all duration-500 hover:bg-white hover:text-black"
+          className="hidden md:block px-6 py-2 rounded-full text-sm font-medium uppercase
+          bg-gradient-to-r from-gray-100 to-gray-300 text-black shadow-sm
+          hover:shadow-lg transition-all"
         >
-          LOGOUT
+          Logout
         </button>
       )}
 
-
-      
-
-   
-
-
-
+      {/* Mobile Hamburger */}
       <button
         onClick={toggleMobileMenu}
-        className="md:hidden text-3xl p-2 hover:text-gray-400 transition-colors"
-        aria-label="Toggle menu"
+        className="md:hidden text-3xl p-2 text-gray-300 hover:text-gray-100 transition"
       >
         <i className="bx bx-menu"></i>
       </button>
 
+      {/* Mobile Slide Menu */}
       <div
-        className={`fixed top-0 right-0 h-full w-3/4 bg-black text-white z-40 transform transition-transform duration-500 ease-in-out ${
-          isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
-        } md:hidden`}
+        className={`fixed top-0 right-0 h-full w-3/4 bg-[#0c0c0c] text-gray-100 z-40 
+        border-l border-gray-800 transform transition-transform duration-500 ease-in-out 
+        ${isMobileMenuOpen ? "translate-x-0" : "translate-x-full"} md:hidden`}
       >
-       
-        <div className="flex justify-between items-center px-5 py-4 border-b border-gray-700">
-          <h2 className="text-xl font-light">Menu</h2>
+        {/* Drawer Header */}
+        <div className="flex justify-between items-center px-5 py-5 border-b border-gray-800">
+          <h2 className="text-lg font-semibold">Menu</h2>
           <button
             onClick={toggleMobileMenu}
-            className="text-3xl hover:text-gray-400 transition-colors"
+            className="text-3xl hover:text-gray-400 transition"
           >
             <i className="bx bx-x"></i>
           </button>
         </div>
 
-       
-        <nav className="flex flex-col gap-6 px-6 mt-6">
-        
-
-          <Link to="/about" className="m-5 px-6 py-3 bg-white text-gray-800 font-semibold rounded-full shadow-md 
-              hover:bg-gray-200 transition-colors duration-300 text-center">
-            About Us
+        {/* Drawer Links */}
+        <nav className="flex flex-col gap-6 px-6 mt-6 text-lg font-medium">
+          
+          <Link
+            to="/dashboard"
+            onClick={(e) => handleProtectedNav(e, "/dashboard")}
+            className="py-2 text-gray-300 hover:text-white transition"
+          >
+            My Account
           </Link>
 
-          <Link to="/contact" className="m-5 px-6 py-3 bg-white text-gray-800 font-semibold rounded-full shadow-md 
-              hover:bg-gray-200 transition-colors duration-300 text-center">
+          <Link
+            to="/about"
+            className="py-2 text-gray-300 hover:text-white transition"
+          >
+            About
+          </Link>
+
+          <Link
+            to="/contact"
+            className="py-2 text-gray-300 hover:text-white transition"
+          >
             Contact
           </Link>
 
-          <Link to="/support" className="m-5 px-6 py-3 bg-white text-gray-800 font-semibold rounded-full shadow-md 
-              hover:bg-gray-200 transition-colors duration-300 text-center">
+          <Link
+            to="/support"
+            className="py-2 text-gray-300 hover:text-white transition"
+          >
             Support
           </Link>
 
-  
           {!user ? (
             <button
               onClick={handleSignIn}
-              className="w-full mt-4 bg-[#a7a7a7] text-black py-3 rounded-full
-                font-medium transition-all duration-500 hover:bg-white hover:text-black"
+              className="mt-6 w-full px-6 py-3 rounded-full 
+              bg-gradient-to-r from-gray-200 to-gray-400 text-black uppercase 
+              font-semibold tracking-wide shadow-md hover:shadow-xl transition-all"
             >
-              SIGN IN
+              Sign In
             </button>
           ) : (
             <button
               onClick={handleLogout}
-              className="w-full mt-4 bg-[#a7a7a7] text-black py-3 rounded-full
-                font-medium transition-all duration-500 hover:bg-white hover:text-black"
+              className="mt-6 w-full px-6 py-3 rounded-full 
+              bg-gradient-to-r from-gray-200 to-gray-400 text-black uppercase 
+              font-semibold tracking-wide shadow-md hover:shadow-xl transition-all"
             >
-              LOGOUT
+              Logout
             </button>
           )}
+
         </nav>
       </div>
     </header>
